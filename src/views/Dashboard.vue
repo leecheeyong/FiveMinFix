@@ -18,8 +18,14 @@
             <span>{{ userStats.streak }}-Day Streak!</span>
           </div>
         </div>
-        <div class="flex flex-col md:flex-row gap-2 md:gap-3 w-full md:w-auto items-center">
-          <span v-if="user && user.email" class="text-gray-600 text-xs md:text-sm font-medium px-2">{{ user.email }}</span>
+        <div
+          class="flex flex-col md:flex-row gap-2 md:gap-3 w-full md:w-auto items-center"
+        >
+          <span
+            v-if="user && user.email"
+            class="text-gray-600 text-xs md:text-sm font-medium px-2"
+            >{{ user.email }}</span
+          >
           <router-link
             to="/tasks"
             class="bg-white/80 border border-primary-100 text-primary-700 rounded-lg px-4 py-2 text-sm font-semibold hover:bg-primary-50 transition-colors shadow-none w-full md:w-auto text-center"
@@ -106,7 +112,9 @@
             class="bg-primary-600 hover:bg-primary-700 text-gray-900 rounded-lg px-6 md:px-8 py-3 md:py-4 text-base md:text-lg font-bold transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed w-full md:w-auto"
           >
             <span v-if="loading">Getting Task...</span>
-            <span v-else-if="!loading && tasks.length === 0">No Tasks Available</span>
+            <span v-else-if="!loading && tasks.length === 0"
+              >No Tasks Available</span
+            >
             <span v-else>🎯 Start Fix</span>
           </button>
           <p v-if="!loading && tasks.length === 0" class="text-gray-500 mt-4">
@@ -121,24 +129,47 @@
         </div>
 
         <!-- Modal Overlay for Current Task -->
-        <div v-if="currentTask && showTask" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-          <div class="bg-white rounded-2xl shadow-2xl p-6 md:p-10 max-w-lg w-full mx-4 animate-slide-up relative">
-            <button @click="resetTask" class="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold">×</button>
-            <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-4 text-center">
+        <div
+          v-if="currentTask && showTask"
+          class="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+        >
+          <div
+            class="bg-white rounded-2xl shadow-2xl p-6 md:p-10 max-w-lg w-full mx-4 animate-slide-up relative"
+          >
+            <button
+              @click="resetTask"
+              class="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold"
+            >
+              ×
+            </button>
+            <h3
+              class="text-xl md:text-2xl font-bold text-gray-900 mb-4 text-center"
+            >
               Your 5-Minute Fix
             </h3>
-            <div class="bg-gray-50/80 rounded-xl p-4 md:p-6 mb-4 md:mb-6 shadow-sm">
+            <div
+              class="bg-gray-50/80 rounded-xl p-4 md:p-6 mb-4 md:mb-6 shadow-sm"
+            >
               <p class="text-base md:text-lg text-gray-800 mb-2 font-semibold">
                 {{ currentTask.title }}
               </p>
               <p class="text-gray-600">{{ currentTask.description }}</p>
-              <div v-if="currentTask.tags && currentTask.tags.length > 0" class="flex flex-wrap gap-2 mt-4">
-                <span v-for="tag in currentTask.tags" :key="tag" class="px-2 md:px-3 py-1 bg-primary-100/80 text-primary-800 rounded-full text-xs font-medium">
+              <div
+                v-if="currentTask.tags && currentTask.tags.length > 0"
+                class="flex flex-wrap gap-2 mt-4"
+              >
+                <span
+                  v-for="tag in currentTask.tags"
+                  :key="tag"
+                  class="px-2 md:px-3 py-1 bg-primary-100/80 text-primary-800 rounded-full text-xs font-medium"
+                >
                   {{ tag }}
                 </span>
               </div>
             </div>
-            <div class="flex flex-col md:flex-row gap-2 md:gap-4 justify-center">
+            <div
+              class="flex flex-col md:flex-row gap-2 md:gap-4 justify-center"
+            >
               <button
                 @click="completeTask"
                 :disabled="loading"
@@ -238,16 +269,16 @@ watch(
 
 const loadTasks = async () => {
   if (!user.value) {
-    console.log('loadTasks: no user');
+    console.log("loadTasks: no user");
     return;
   }
-  console.log('loadTasks: fetching tasks for', user.value.uid);
+  console.log("loadTasks: fetching tasks for", user.value.uid);
   const result = await getTasks(user.value.uid);
-  console.log('loadTasks: result', result);
+  console.log("loadTasks: result", result);
   if (result.success) {
     tasks.value = result.data;
   } else {
-    console.error('Failed to load tasks:', result.error);
+    console.error("Failed to load tasks:", result.error);
   }
 };
 
