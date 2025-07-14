@@ -94,7 +94,6 @@ export const useFirestore = () => {
       if (userDoc.exists()) {
         return { success: true, data: userDoc.data() };
       } else {
-        // Create initial user stats
         const initialStats = {
           xp: 0,
           level: 1,

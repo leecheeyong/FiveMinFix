@@ -33,7 +33,6 @@
       </div>
     </nav>
 
-    <!-- Hero Section -->
     <section
       class="max-w-6xl mx-auto px-4 py-24 text-center relative overflow-hidden"
     >
@@ -111,7 +110,6 @@
           <div
             class="flex flex-col items-center bg-white/90 rounded-3xl shadow-lg p-8 hover:scale-105 hover:shadow-2xl transition-all duration-300"
           >
-            <!-- Plus Icon -->
             <div
               class="w-16 h-16 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center mb-4 text-white text-2xl font-bold shadow-lg"
             >
@@ -153,7 +151,6 @@
           <div
             class="flex flex-col items-center bg-white/90 rounded-3xl shadow-lg p-8 hover:scale-105 hover:shadow-2xl transition-all duration-300"
           >
-            <!-- Play Icon -->
             <div
               class="w-16 h-16 bg-gradient-to-br from-accent-500 to-accent-600 rounded-full flex items-center justify-center mb-4 text-white text-2xl font-bold shadow-lg"
             >
@@ -184,7 +181,6 @@
           <div
             class="flex flex-col items-center bg-white/90 rounded-3xl shadow-lg p-8 hover:scale-105 hover:shadow-2xl transition-all duration-300"
           >
-            <!-- Check Icon -->
             <div
               class="w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center mb-4 text-white text-2xl font-bold shadow-lg"
             >
@@ -218,7 +214,6 @@
           <div
             class="flex flex-col items-center bg-white/90 rounded-3xl shadow-lg p-8 hover:scale-105 hover:shadow-2xl transition-all duration-300"
           >
-            <!-- Streak Icon (unchanged) -->
             <div
               class="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center mb-4 text-white text-2xl font-bold shadow-lg"
             >
@@ -251,7 +246,6 @@
       </div>
     </section>
 
-    <!-- Footer -->
     <footer class="bg-gray-900 text-white py-12">
       <div class="max-w-6xl mx-auto px-4">
         <div class="flex flex-col md:flex-row justify-between items-center">

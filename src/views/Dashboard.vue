@@ -1,9 +1,14 @@
 <template>
   <div class="min-h-screen bg-gray-50">
-    <header class="backdrop-blur bg-white/60 border-b border-gray-200 shadow-lg rounded-b-2xl mb-8">
-      <div class="max-w-4xl w-full mx-auto px-2 md:px-6 py-4 md:py-6 flex flex-col md:flex-row md:justify-between md:items-center gap-4 md:gap-0">
+    <header
+      class="backdrop-blur bg-white/60 border-b border-gray-200 shadow-lg rounded-b-2xl mb-8"
+    >
+      <div
+        class="max-w-4xl w-full mx-auto px-2 md:px-6 py-4 md:py-6 flex flex-col md:flex-row md:justify-between md:items-center gap-4 md:gap-0"
+      >
         <div class="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
-          <span class="text-2xl md:text-3xl font-extrabold text-primary-700 tracking-tight drop-shadow-sm"
+          <span
+            class="text-2xl md:text-3xl font-extrabold text-primary-700 tracking-tight drop-shadow-sm"
             >FiveMinFix</span
           >
           <div
@@ -31,9 +36,13 @@
     </header>
 
     <main class="max-w-4xl w-full mx-auto px-2 md:px-4 py-6 md:py-12">
-      <div class="card mb-8 md:mb-10 rounded-2xl shadow-xl bg-white/70 backdrop-blur p-6 md:p-10 w-full">
+      <div
+        class="card mb-8 md:mb-10 rounded-2xl shadow-xl bg-white/70 backdrop-blur p-6 md:p-10 w-full"
+      >
         <div class="text-center">
-          <h2 class="text-2xl md:text-3xl font-extrabold text-gray-900 mb-2 tracking-tight">
+          <h2
+            class="text-2xl md:text-3xl font-extrabold text-gray-900 mb-2 tracking-tight"
+          >
             Welcome back! 👋
           </h2>
           <p class="text-gray-700 mb-6 md:mb-8 text-base md:text-lg">
@@ -49,7 +58,9 @@
                 >{{ userStats.xp % 100 }}/100 XP</span
               >
             </div>
-            <div class="w-full h-3 md:h-4 bg-primary-100/60 rounded-full overflow-hidden">
+            <div
+              class="w-full h-3 md:h-4 bg-primary-100/60 rounded-full overflow-hidden"
+            >
               <div
                 class="h-3 md:h-4 bg-gradient-to-r from-primary-400/80 to-accent-400/80 rounded-full transition-all duration-700"
                 :style="{ width: `${userStats.xp % 100}%` }"
@@ -59,7 +70,9 @@
         </div>
       </div>
 
-      <div class="card rounded-2xl shadow-xl bg-white/70 backdrop-blur p-6 md:p-10 mb-8 md:mb-10 w-full">
+      <div
+        class="card rounded-2xl shadow-xl bg-white/70 backdrop-blur p-6 md:p-10 mb-8 md:mb-10 w-full"
+      >
         <div v-if="!currentTask" class="text-center">
           <div class="mb-8 md:mb-10">
             <div
@@ -134,8 +147,12 @@
                   <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-4">
                     Your 5-Minute Fix
                   </h3>
-                  <div class="bg-gray-50/80 rounded-xl p-4 md:p-6 mb-4 md:mb-6 shadow-sm">
-                    <p class="text-base md:text-lg text-gray-800 mb-2 font-semibold">
+                  <div
+                    class="bg-gray-50/80 rounded-xl p-4 md:p-6 mb-4 md:mb-6 shadow-sm"
+                  >
+                    <p
+                      class="text-base md:text-lg text-gray-800 mb-2 font-semibold"
+                    >
                       {{ currentTask.title }}
                     </p>
                     <p class="text-gray-600">{{ currentTask.description }}</p>
@@ -153,7 +170,9 @@
                     </div>
                   </div>
 
-                  <div class="flex flex-col md:flex-row gap-2 md:gap-4 justify-center">
+                  <div
+                    class="flex flex-col md:flex-row gap-2 md:gap-4 justify-center"
+                  >
                     <button
                       @click="completeTask"
                       :disabled="loading"
@@ -177,25 +196,39 @@
       </div>
 
       <div class="overflow-x-auto">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 mt-8 md:mt-12 w-full min-w-[320px]">
-          <div class="card text-center rounded-2xl shadow bg-white/60 backdrop-blur p-4 md:p-6 border border-primary-100 w-full">
-            <div class="text-3xl md:text-4xl font-extrabold text-primary-600 mb-2">
+        <div
+          class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 mt-8 md:mt-12 w-full min-w-[320px]"
+        >
+          <div
+            class="card text-center rounded-2xl shadow bg-white/60 backdrop-blur p-4 md:p-6 border border-primary-100 w-full"
+          >
+            <div
+              class="text-3xl md:text-4xl font-extrabold text-primary-600 mb-2"
+            >
               {{ userStats.totalTasksCompleted }}
             </div>
             <div class="text-gray-700 text-sm md:text-base font-medium">
               Tasks Completed
             </div>
           </div>
-          <div class="card text-center rounded-2xl shadow bg-white/60 backdrop-blur p-4 md:p-6 border border-accent-100 w-full">
-            <div class="text-3xl md:text-4xl font-extrabold text-accent-600 mb-2">
+          <div
+            class="card text-center rounded-2xl shadow bg-white/60 backdrop-blur p-4 md:p-6 border border-accent-100 w-full"
+          >
+            <div
+              class="text-3xl md:text-4xl font-extrabold text-accent-600 mb-2"
+            >
               {{ userStats.level }}
             </div>
             <div class="text-gray-700 text-sm md:text-base font-medium">
               Current Level
             </div>
           </div>
-          <div class="card text-center rounded-2xl shadow bg-white/60 backdrop-blur p-4 md:p-6 border border-orange-100 w-full">
-            <div class="text-3xl md:text-4xl font-extrabold text-orange-600 mb-2">
+          <div
+            class="card text-center rounded-2xl shadow bg-white/60 backdrop-blur p-4 md:p-6 border border-orange-100 w-full"
+          >
+            <div
+              class="text-3xl md:text-4xl font-extrabold text-orange-600 mb-2"
+            >
               {{ userStats.xp }}
             </div>
             <div class="text-gray-700 text-sm md:text-base font-medium">

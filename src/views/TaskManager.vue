@@ -1,8 +1,11 @@
 <template>
   <div class="min-h-screen bg-gray-50">
-    <!-- Header -->
-    <header class="backdrop-blur bg-white/60 border-b border-gray-200 shadow-lg rounded-b-2xl mb-8">
-      <div class="max-w-4xl mx-auto px-6 py-6 flex justify-between items-center">
+    <header
+      class="backdrop-blur bg-white/60 border-b border-gray-200 shadow-lg rounded-b-2xl mb-8"
+    >
+      <div
+        class="max-w-4xl mx-auto px-6 py-6 flex justify-between items-center"
+      >
         <div class="flex items-center gap-4">
           <router-link
             to="/dashboard"
@@ -10,7 +13,8 @@
           >
             ← Back to Dashboard
           </router-link>
-          <span class="text-2xl md:text-3xl font-extrabold text-primary-700 tracking-tight drop-shadow-sm"
+          <span
+            class="text-2xl md:text-3xl font-extrabold text-primary-700 tracking-tight drop-shadow-sm"
             >Task Manager</span
           >
         </div>
@@ -25,7 +29,6 @@
     </header>
 
     <main class="max-w-4xl mx-auto px-4 py-12">
-      <!-- Add Task Section -->
       <div
         class="card mb-10 rounded-2xl shadow-xl bg-white/70 backdrop-blur p-8 border border-primary-100"
       >
@@ -35,8 +38,7 @@
 
         <form @submit.prevent="addTask" class="space-y-6">
           <div>
-            <label
-              class="block text-base font-semibold text-gray-800 mb-2"
+            <label class="block text-base font-semibold text-gray-800 mb-2"
               >Task Title</label
             >
             <input
@@ -49,8 +51,7 @@
           </div>
 
           <div>
-            <label
-              class="block text-base font-semibold text-gray-800 mb-2"
+            <label class="block text-base font-semibold text-gray-800 mb-2"
               >Description</label
             >
             <textarea
@@ -62,8 +63,7 @@
           </div>
 
           <div>
-            <label
-              class="block text-base font-semibold text-gray-800 mb-2"
+            <label class="block text-base font-semibold text-gray-800 mb-2"
               >Tags (comma separated)</label
             >
             <input
@@ -96,7 +96,6 @@
         </form>
       </div>
 
-      <!-- Tasks List -->
       <div
         class="card rounded-2xl shadow-xl bg-white/70 backdrop-blur p-8 border border-accent-100"
       >
@@ -268,30 +267,25 @@ const addTask = async () => {
   };
 
   if (editingTask.value) {
-    // Update existing task
     const result = await updateTask(
       user.value.uid,
       editingTask.value.id,
-      taskData
+      taskData,
     );
     if (result.success) {
-      const index = tasks.value.findIndex(
-        (t) => t.id === editingTask.value.id
-      );
+      const index = tasks.value.findIndex((t) => t.id === editingTask.value.id);
       if (index !== -1) {
         tasks.value[index] = { ...tasks.value[index], ...taskData };
       }
       editingTask.value = null;
     }
   } else {
-    // Add new task
     const result = await addTaskToFirestore(user.value.uid, taskData);
     if (result.success) {
-      await loadTasks(); // Reload to get the new task with ID
+      await loadTasks();
     }
   }
 
-  // Reset form
   newTask.value = { title: "", description: "" };
   tagInput.value = "";
   loading.value = false;
@@ -329,7 +323,3 @@ const handleLogout = async () => {
 
 onMounted(loadTasks);
 </script>
-
-<style>
-/* Add any additional global styles here */
-</style>
