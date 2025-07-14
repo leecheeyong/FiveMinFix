@@ -1,63 +1,66 @@
 import { ref, onMounted } from "vue";
-import { auth } from "../firebase";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  signOut,
+  signOut as firebaseSignOut,
   onAuthStateChanged,
 } from "firebase/auth";
+import { auth } from "../firebase";
 
 const user = ref(null);
 const loading = ref(true);
+let authInitialized = false;
 
-export const useAuth = () => {
-  const login = async (email, password) => {
+export function useAuth() {
+  const signIn = async (email, password) => {
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
-      user.value = result.user;
-      return { success: true };
+      return { user: result.user, error: null };
     } catch (error) {
-      return { success: false, error: error.message };
+      return { user: null, error: error.message };
     }
   };
 
-  const register = async (email, password) => {
+  const signUp = async (email, password) => {
     try {
       const result = await createUserWithEmailAndPassword(
         auth,
         email,
         password,
       );
-      user.value = result.user;
-      return { success: true };
+      return { user: result.user, error: null };
     } catch (error) {
-      return { success: false, error: error.message };
+      return { user: null, error: error.message };
     }
   };
 
   const logout = async () => {
     try {
-      await signOut(auth);
+      await firebaseSignOut(auth);
       user.value = null;
-      return { success: true };
     } catch (error) {
-      return { success: false, error: error.message };
+      console.error("Sign out error:", error);
     }
   };
 
   const initAuth = () => {
+    if (authInitialized) return;
+    authInitialized = true;
+
     onAuthStateChanged(auth, (firebaseUser) => {
       user.value = firebaseUser;
       loading.value = false;
     });
   };
 
+  initAuth();
+
   return {
     user,
     loading,
-    login,
-    register,
+    signIn,
+    signUp,
     logout,
     initAuth,
   };
-};
+}

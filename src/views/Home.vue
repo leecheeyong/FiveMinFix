@@ -12,17 +12,12 @@
           <div
             class="w-10 h-10 bg-gradient-to-br from-primary-600 to-accent-600 rounded-xl flex items-center justify-center"
           >
-            <span class="text-white font-bold text-lg">5</span>
+            <span class="text-gray-900 font-bold text-lg">5</span>
           </div>
           <h1 class="text-2xl font-bold text-gray-900">FiveMinFix</h1>
         </div>
 
         <div class="flex items-center gap-4">
-          <a
-            href="#features"
-            class="text-gray-600 hover:text-primary-600 transition-colors"
-            >Features</a
-          >
           <a
             href="#how-it-works"
             class="text-gray-600 hover:text-primary-600 transition-colors"
@@ -253,7 +248,7 @@
             <div
               class="w-10 h-10 bg-gradient-to-br from-primary-600 to-accent-600 rounded-xl flex items-center justify-center"
             >
-              <span class="text-white font-bold text-lg">5</span>
+              <span class="text-gray-900 font-bold text-lg">5</span>
             </div>
             <div>
               <h3 class="text-xl font-bold">FiveMinFix</h3>

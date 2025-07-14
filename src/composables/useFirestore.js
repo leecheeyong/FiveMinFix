@@ -23,13 +23,14 @@ export const useFirestore = () => {
     loading.value = true;
     try {
       const tasksRef = collection(db, "users", userId, "tasks");
-      await addDoc(tasksRef, {
+      const docRef = await addDoc(tasksRef, {
         ...taskData,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
       });
       return { success: true };
     } catch (err) {
+      console.error("addTask Firestore error:", err);
       error.value = err.message;
       return { success: false, error: err.message };
     } finally {

@@ -18,7 +18,8 @@
             <span>{{ userStats.streak }}-Day Streak!</span>
           </div>
         </div>
-        <div class="flex flex-col md:flex-row gap-2 md:gap-3 w-full md:w-auto">
+        <div class="flex flex-col md:flex-row gap-2 md:gap-3 w-full md:w-auto items-center">
+          <span v-if="user && user.email" class="text-gray-600 text-xs md:text-sm font-medium px-2">{{ user.email }}</span>
           <router-link
             to="/tasks"
             class="bg-white/80 border border-primary-100 text-primary-700 rounded-lg px-4 py-2 text-sm font-semibold hover:bg-primary-50 transition-colors shadow-none w-full md:w-auto text-center"
@@ -73,7 +74,7 @@
       <div
         class="card rounded-2xl shadow-xl bg-white/70 backdrop-blur p-6 md:p-10 mb-8 md:mb-10 w-full"
       >
-        <div v-if="!currentTask" class="text-center">
+        <div v-if="!currentTask || !showTask" class="text-center">
           <div class="mb-8 md:mb-10">
             <div
               class="w-20 md:w-24 h-20 md:h-24 bg-primary-100/70 rounded-full flex items-center justify-center mx-auto mb-4 md:mb-6 shadow"
@@ -105,10 +106,10 @@
             class="bg-primary-600 hover:bg-primary-700 text-gray-900 rounded-lg px-6 md:px-8 py-3 md:py-4 text-base md:text-lg font-bold transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed w-full md:w-auto"
           >
             <span v-if="loading">Getting Task...</span>
-            <span v-else-if="tasks.length === 0">No Tasks Available</span>
+            <span v-else-if="!loading && tasks.length === 0">No Tasks Available</span>
             <span v-else>🎯 Start Fix</span>
           </button>
-          <p v-if="tasks.length === 0" class="text-gray-500 mt-4">
+          <p v-if="!loading && tasks.length === 0" class="text-gray-500 mt-4">
             <router-link
               to="/tasks"
               class="text-primary-600 hover:text-primary-700 underline"
@@ -119,77 +120,39 @@
           </p>
         </div>
 
-        <!-- Current Task Display -->
-        <div v-if="currentTask" class="text-center">
-          <div class="flip-card" :class="{ flipped: showTask }">
-            <div class="flip-card-inner">
-              <div class="flip-card-front">
-                <div
-                  class="w-20 md:w-24 h-20 md:h-24 bg-accent-100/70 rounded-full flex items-center justify-center mx-auto mb-4 md:mb-6 shadow"
-                >
-                  <svg
-                    class="w-10 md:w-12 h-10 md:h-12 text-accent-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                </div>
+        <!-- Modal Overlay for Current Task -->
+        <div v-if="currentTask && showTask" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div class="bg-white rounded-2xl shadow-2xl p-6 md:p-10 max-w-lg w-full mx-4 animate-slide-up relative">
+            <button @click="resetTask" class="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold">×</button>
+            <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-4 text-center">
+              Your 5-Minute Fix
+            </h3>
+            <div class="bg-gray-50/80 rounded-xl p-4 md:p-6 mb-4 md:mb-6 shadow-sm">
+              <p class="text-base md:text-lg text-gray-800 mb-2 font-semibold">
+                {{ currentTask.title }}
+              </p>
+              <p class="text-gray-600">{{ currentTask.description }}</p>
+              <div v-if="currentTask.tags && currentTask.tags.length > 0" class="flex flex-wrap gap-2 mt-4">
+                <span v-for="tag in currentTask.tags" :key="tag" class="px-2 md:px-3 py-1 bg-primary-100/80 text-primary-800 rounded-full text-xs font-medium">
+                  {{ tag }}
+                </span>
               </div>
-              <div class="flip-card-back">
-                <div class="animate-slide-up">
-                  <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-4">
-                    Your 5-Minute Fix
-                  </h3>
-                  <div
-                    class="bg-gray-50/80 rounded-xl p-4 md:p-6 mb-4 md:mb-6 shadow-sm"
-                  >
-                    <p
-                      class="text-base md:text-lg text-gray-800 mb-2 font-semibold"
-                    >
-                      {{ currentTask.title }}
-                    </p>
-                    <p class="text-gray-600">{{ currentTask.description }}</p>
-                    <div
-                      v-if="currentTask.tags && currentTask.tags.length > 0"
-                      class="flex flex-wrap gap-2 mt-4"
-                    >
-                      <span
-                        v-for="tag in currentTask.tags"
-                        :key="tag"
-                        class="px-2 md:px-3 py-1 bg-primary-100/80 text-primary-800 rounded-full text-xs font-medium"
-                      >
-                        {{ tag }}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div
-                    class="flex flex-col md:flex-row gap-2 md:gap-4 justify-center"
-                  >
-                    <button
-                      @click="completeTask"
-                      :disabled="loading"
-                      class="bg-accent-600 hover:bg-accent-700 text-gray-900 rounded-lg px-6 py-3 font-semibold transition-colors shadow disabled:opacity-50 disabled:cursor-not-allowed w-full md:w-auto"
-                    >
-                      ✅ Done (+5 XP)
-                    </button>
-                    <button
-                      @click="skipTask"
-                      :disabled="loading"
-                      class="bg-gray-200 hover:bg-gray-300 text-gray-900 rounded-lg px-6 py-3 font-semibold transition-colors shadow disabled:opacity-50 disabled:cursor-not-allowed w-full md:w-auto"
-                    >
-                      ⏭️ Skip
-                    </button>
-                  </div>
-                </div>
-              </div>
+            </div>
+            <div class="flex flex-col md:flex-row gap-2 md:gap-4 justify-center">
+              <button
+                @click="completeTask"
+                :disabled="loading"
+                class="bg-accent-600 hover:bg-accent-700 text-gray-900 rounded-lg px-6 py-3 font-semibold transition-colors shadow disabled:opacity-50 disabled:cursor-not-allowed w-full md:w-auto"
+              >
+                ✅ Done (+5 XP)
+              </button>
+              <button
+                @click="skipTask"
+                :disabled="loading"
+                class="bg-gray-200 hover:bg-gray-300 text-gray-900 rounded-lg px-6 py-3 font-semibold transition-colors shadow disabled:opacity-50 disabled:cursor-not-allowed w-full md:w-auto"
+              >
+                ⏭️ Skip
+              </button>
             </div>
           </div>
         </div>
@@ -242,13 +205,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useAuth } from "../composables/useAuth";
 import { useFirestore } from "../composables/useFirestore";
 
 const router = useRouter();
-const { user, logout } = useAuth();
+const { user, logout, isAuthReady } = useAuth();
 const { getTasks, getUserStats, updateUserStats } = useFirestore();
 
 const tasks = ref([]);
@@ -263,12 +226,28 @@ const userStats = ref({
   totalTasksCompleted: 0,
 });
 
-const loadTasks = async () => {
-  if (!user.value) return;
+watch(
+  [() => isAuthReady && isAuthReady.value, () => user.value],
+  ([ready, val]) => {
+    if (ready && val === null) {
+      router.push("/login");
+    }
+  },
+  { immediate: true },
+);
 
+const loadTasks = async () => {
+  if (!user.value) {
+    console.log('loadTasks: no user');
+    return;
+  }
+  console.log('loadTasks: fetching tasks for', user.value.uid);
   const result = await getTasks(user.value.uid);
+  console.log('loadTasks: result', result);
   if (result.success) {
     tasks.value = result.data;
+  } else {
+    console.error('Failed to load tasks:', result.error);
   }
 };
 
@@ -326,7 +305,6 @@ const completeTask = async () => {
     totalTasksCompleted: userStats.value.totalTasksCompleted + 1,
   });
 
-  // Update local state
   userStats.value = {
     ...userStats.value,
     xp: newXP,
@@ -336,17 +314,18 @@ const completeTask = async () => {
     totalTasksCompleted: userStats.value.totalTasksCompleted + 1,
   };
 
-  resetTask();
+  await resetTask();
   loading.value = false;
 };
 
-const skipTask = () => {
-  resetTask();
+const skipTask = async () => {
+  await resetTask();
 };
 
-const resetTask = () => {
+const resetTask = async () => {
   currentTask.value = null;
   showTask.value = false;
+  await loadTasks();
 };
 
 const handleLogout = async () => {
@@ -355,9 +334,21 @@ const handleLogout = async () => {
 };
 
 onMounted(async () => {
-  await loadTasks();
   await loadUserStats();
 });
+
+watch(
+  [() => isAuthReady && isAuthReady.value, () => user.value],
+  async ([ready, val]) => {
+    if (ready && val) {
+      await loadTasks();
+    }
+    if (ready && val === null) {
+      router.push("/login");
+    }
+  },
+  { immediate: true },
+);
 </script>
 
 <style scoped>
@@ -380,46 +371,23 @@ onMounted(async () => {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.flip-card {
-  position: relative;
-  width: 100%;
-  padding-top: 100%;
-  cursor: pointer;
-  perspective: 1000px;
+.fixed {
+  position: fixed;
 }
 
-.flip-card-inner {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  transition: transform 0.6s;
-  transform-style: preserve-3d;
+.inset-0 {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 }
 
-.flip-card-front,
-.flip-card-back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  border-radius: 1rem;
+.z-50 {
+  z-index: 50;
 }
 
-.flip-card-front {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(229, 231, 235, 0.8);
-}
-
-.flip-card-back {
-  display: flex;
-  align-items: flex-start;
-  flex-direction: column;
-  justify-content: center;
-  padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.bg-black\/40 {
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .animate-slide-up {

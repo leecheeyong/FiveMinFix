@@ -119,18 +119,18 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useAuth } from "../composables/useAuth";
 
 const router = useRouter();
-const { login, register } = useAuth();
+const { signIn, signUp, user } = useAuth();
 
 const email = ref("");
 const password = ref("");
-const isLogin = ref(true);
-const loading = ref(false);
 const error = ref("");
+const isLoading = ref(false);
+const isSignUp = ref(false);
 
 const toggleMode = () => {
   isLogin.value = !isLogin.value;
@@ -138,23 +138,32 @@ const toggleMode = () => {
 };
 
 const handleSubmit = async () => {
-  loading.value = true;
+  if (isLoading.value) return;
+
+  isLoading.value = true;
   error.value = "";
 
   try {
-    const result = isLogin.value
-      ? await login(email.value, password.value)
-      : await register(email.value, password.value);
+    const result = isSignUp.value
+      ? await signUp(email.value, password.value)
+      : await signIn(email.value, password.value);
 
-    if (result.success) {
-      router.push("/dashboard");
-    } else {
+    if (result.error) {
       error.value = result.error;
+    } else {
+      router.push("/dashboard");
     }
-  } catch (err) {
-    error.value = "An unexpected error occurred";
   } finally {
-    loading.value = false;
+    isLoading.value = false;
   }
 };
+
+watch(
+  () => user.value,
+  (val) => {
+    if (val) {
+      router.push("/dashboard");
+    }
+  },
+);
 </script>
