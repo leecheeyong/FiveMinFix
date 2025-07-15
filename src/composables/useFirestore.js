@@ -41,9 +41,11 @@ export const useFirestore = () => {
   const getTasks = async (userId) => {
     loading.value = true;
     try {
+      console.log('getTasks: userId', userId); // DEBUG
       const tasksRef = collection(db, "users", userId, "tasks");
       const q = query(tasksRef, orderBy("createdAt", "desc"));
       const querySnapshot = await getDocs(q);
+      console.log('getTasks: querySnapshot.size', querySnapshot.size); // DEBUG
       const tasks = [];
       querySnapshot.forEach((doc) => {
         tasks.push({ id: doc.id, ...doc.data() });
@@ -114,10 +116,10 @@ export const useFirestore = () => {
   const updateUserStats = async (userId, updates) => {
     try {
       const userRef = doc(db, "users", userId);
-      await updateDoc(userRef, {
+      await setDoc(userRef, {
         ...updates,
         updatedAt: serverTimestamp(),
-      });
+      }, { merge: true });
       return { success: true };
     } catch (err) {
       error.value = err.message;

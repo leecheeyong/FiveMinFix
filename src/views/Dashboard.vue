@@ -66,10 +66,10 @@
               >
             </div>
             <div
-              class="w-full h-3 md:h-4 bg-primary-100/60 rounded-full overflow-hidden"
+              class="w-full h-3 md:h-4 bg-gray-600/20 -100/60 rounded-full overflow-hidden"
             >
               <div
-                class="h-3 md:h-4 bg-gradient-to-r from-primary-400/80 to-accent-400/80 rounded-full transition-all duration-700"
+                class="h-3 md:h-4 bg-orange-400 rounded-full transition-all duration-700"
                 :style="{ width: `${userStats.xp % 100}%` }"
               ></div>
             </div>
@@ -236,7 +236,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from "vue";
+import { ref, watch, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useAuth } from "../composables/useAuth";
 import { useFirestore } from "../composables/useFirestore";
@@ -256,6 +256,18 @@ const userStats = ref({
   lastCompletedDate: null,
   totalTasksCompleted: 0,
 });
+const userId = computed(() => user.value && user.value.uid);
+
+watch(
+  userId,
+  (newUid) => {
+    if (newUid) {
+      loadTasks();
+      loadUserStats(); // Also load stats when userId changes
+    }
+  },
+  { immediate: true },
+);
 
 watch(
   [() => isAuthReady && isAuthReady.value, () => user.value],
@@ -272,9 +284,7 @@ const loadTasks = async () => {
     console.log("loadTasks: no user");
     return;
   }
-  console.log("loadTasks: fetching tasks for", user.value.uid);
   const result = await getTasks(user.value.uid);
-  console.log("loadTasks: result", result);
   if (result.success) {
     tasks.value = result.data;
   } else {
@@ -328,22 +338,20 @@ const completeTask = async () => {
     newStreak = 1;
   }
 
-  await updateUserStats(user.value.uid, {
+  const updateResult = await updateUserStats(user.value.uid, {
     xp: newXP,
     level: newLevel,
     streak: newStreak,
     lastCompletedDate: today,
     totalTasksCompleted: userStats.value.totalTasksCompleted + 1,
   });
+  console.log('updateUserStats result:', updateResult); // DEBUG
+  if (!updateResult.success) {
+    alert('Failed to update stats: ' + updateResult.error);
+  }
 
-  userStats.value = {
-    ...userStats.value,
-    xp: newXP,
-    level: newLevel,
-    streak: newStreak,
-    lastCompletedDate: today,
-    totalTasksCompleted: userStats.value.totalTasksCompleted + 1,
-  };
+  // Always reload stats from Firestore after update
+  await loadUserStats();
 
   await resetTask();
   loading.value = false;
@@ -363,23 +371,6 @@ const handleLogout = async () => {
   await logout();
   router.push("/login");
 };
-
-onMounted(async () => {
-  await loadUserStats();
-});
-
-watch(
-  [() => isAuthReady && isAuthReady.value, () => user.value],
-  async ([ready, val]) => {
-    if (ready && val) {
-      await loadTasks();
-    }
-    if (ready && val === null) {
-      router.push("/login");
-    }
-  },
-  { immediate: true },
-);
 </script>
 
 <style scoped>
