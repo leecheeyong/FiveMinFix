@@ -131,56 +131,56 @@
         <!-- Modal Overlay for Current Task -->
         <div
           v-if="currentTask && showTask"
-          class="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+          class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-2 md:px-0"
         >
           <div
-            class="bg-white rounded-2xl shadow-2xl p-6 md:p-10 max-w-lg w-full mx-4 animate-slide-up relative"
+            class="relative w-full max-w-lg md:max-w-xl bg-white rounded-3xl shadow-2xl border border-gray-200 p-4 md:p-8 flex flex-col gap-4 animate-slide-up"
+            style="box-shadow: 0 8px 32px rgba(0,0,0,0.18);"
           >
             <button
               @click="resetTask"
-              class="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold"
+              class="absolute top-3 right-3 text-gray-400 hover:text-primary-600 text-3xl font-bold transition-colors focus:outline-none focus:ring-2 focus:ring-primary-300 rounded-full w-10 h-10 flex items-center justify-center bg-gray-100 hover:bg-primary-50"
+              aria-label="Close"
             >
               ×
             </button>
             <h3
-              class="text-xl md:text-2xl font-bold text-gray-900 mb-4 text-center"
+              class="text-2xl md:text-3xl font-bold text-primary-700 mb-2 text-center tracking-tight"
             >
               Your 5-Minute Fix
             </h3>
             <div
-              class="bg-gray-50/80 rounded-xl p-4 md:p-6 mb-4 md:mb-6 shadow-sm"
+              class="bg-gray-50/90 rounded-2xl p-4 md:p-6 mb-2 md:mb-4 shadow-sm border border-gray-100"
             >
-              <p class="text-base md:text-lg text-gray-800 mb-2 font-semibold">
+              <p class="text-lg md:text-xl text-gray-900 mb-2 font-semibold text-center">
                 {{ currentTask.title }}
               </p>
-              <p class="text-gray-600">{{ currentTask.description }}</p>
+              <p class="text-gray-600 text-center">{{ currentTask.description }}</p>
               <div
                 v-if="currentTask.tags && currentTask.tags.length > 0"
-                class="flex flex-wrap gap-2 mt-4"
+                class="flex flex-wrap gap-2 mt-4 justify-center"
               >
                 <span
                   v-for="tag in currentTask.tags"
                   :key="tag"
-                  class="px-2 md:px-3 py-1 bg-primary-100/80 text-primary-800 rounded-full text-xs font-medium"
+                  class="px-3 py-1 bg-primary-100/90 text-primary-800 rounded-full text-xs font-medium shadow-sm border border-primary-200"
                 >
                   {{ tag }}
                 </span>
               </div>
             </div>
-            <div
-              class="flex flex-col md:flex-row gap-2 md:gap-4 justify-center"
-            >
+            <div class="flex flex-col md:flex-row gap-2 md:gap-4 justify-center mt-2">
               <button
                 @click="completeTask"
                 :disabled="loading"
-                class="bg-accent-600 hover:bg-accent-700 text-gray-900 rounded-lg px-6 py-3 font-semibold transition-colors shadow disabled:opacity-50 disabled:cursor-not-allowed w-full md:w-auto"
+                class="bg-accent-600 hover:bg-accent-700 rounded-xl px-6 py-3 font-semibold transition-colors shadow disabled:opacity-50 disabled:cursor-not-allowed w-full md:w-auto text-lg"
               >
                 ✅ Done (+5 XP)
               </button>
               <button
                 @click="skipTask"
                 :disabled="loading"
-                class="bg-gray-200 hover:bg-gray-300 text-gray-900 rounded-lg px-6 py-3 font-semibold transition-colors shadow disabled:opacity-50 disabled:cursor-not-allowed w-full md:w-auto"
+                class="bg-gray-200 hover:bg-gray-300 text-gray-900 rounded-xl px-6 py-3 font-semibold transition-colors shadow disabled:opacity-50 disabled:cursor-not-allowed w-full md:w-auto text-lg"
               >
                 ⏭️ Skip
               </button>
@@ -259,20 +259,9 @@ const userStats = ref({
 const userId = computed(() => user.value && user.value.uid);
 
 watch(
-  userId,
-  (newUid) => {
-    if (newUid) {
-      loadTasks();
-      loadUserStats(); // Also load stats when userId changes
-    }
-  },
-  { immediate: true },
-);
-
-watch(
   [() => isAuthReady && isAuthReady.value, () => user.value],
   ([ready, val]) => {
-    if (ready && val === null) {
+    if (ready && !val) {
       router.push("/login");
     }
   },
@@ -300,6 +289,17 @@ const loadUserStats = async () => {
     userStats.value = result.data;
   }
 };
+
+watch(
+  userId,
+  (newUid) => {
+    if (newUid) {
+      loadTasks();
+      loadUserStats();
+    }
+  },
+  { immediate: true },
+);
 
 const getRandomTask = async () => {
   if (tasks.value.length === 0) return;
