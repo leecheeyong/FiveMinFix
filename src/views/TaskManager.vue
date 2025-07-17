@@ -1,7 +1,7 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div class="min-h-screen bg-gradient-to-br from-primary-50 via-white to-accent-50">
     <header
-      class="backdrop-blur bg-white/60 border-b border-gray-200 shadow-lg rounded-b-2xl mb-8"
+      class="backdrop-blur bg-white/70 border-b border-gray-200 shadow-lg rounded-b-2xl mb-8"
     >
       <div
         class="max-w-4xl w-full mx-auto px-2 md:px-6 py-4 md:py-6 flex flex-col md:flex-row md:justify-between md:items-center gap-4 md:gap-0"
@@ -9,7 +9,7 @@
         <div class="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
           <router-link
             to="/dashboard"
-            class="bg-white/80 border border-primary-100 text-primary-700 rounded-lg px-4 py-2 text-sm font-semibold hover:bg-primary-50 transition-colors shadow-none w-full md:w-auto text-center"
+            class="bg-gradient-to-r from-primary-100 to-accent-100 border border-primary-200 text-primary-700 rounded-lg px-4 py-2 text-sm font-semibold hover:bg-primary-50 transition-colors shadow w-full md:w-auto text-center"
           >
             ← Back to Dashboard
           </router-link>
@@ -28,7 +28,7 @@
           >
           <button
             @click="handleLogout"
-            class="bg-white/80 border border-gray-200 text-gray-700 rounded-lg px-4 py-2 text-sm font-semibold hover:bg-gray-100 transition-colors shadow-none w-full md:w-auto"
+            class="bg-white/90 border border-gray-200 text-gray-700 rounded-lg px-4 py-2 text-sm font-semibold hover:bg-gray-100 transition-colors shadow w-full md:w-auto"
           >
             Sign Out
           </button>
@@ -38,7 +38,7 @@
 
     <main class="max-w-4xl w-full mx-auto px-2 md:px-4 py-6 md:py-12">
       <div
-        class="card mb-8 md:mb-10 rounded-2xl shadow-xl bg-white/70 backdrop-blur p-6 md:p-8 border border-primary-100 w-full"
+        class="card mb-8 md:mb-10 rounded-2xl shadow-xl bg-gradient-to-br from-primary-50 via-white to-accent-50/80 backdrop-blur p-6 md:p-8 border border-primary-100 w-full"
       >
         <h2
           class="text-xl md:text-2xl font-bold text-primary-700 mb-4 md:mb-6 tracking-tight"
@@ -54,7 +54,7 @@
               v-model="newTask.title"
               type="text"
               required
-              class="input-field w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 focus:outline-none text-gray-900 bg-gray-50 placeholder-gray-400 transition"
+              class="input-field w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 focus:outline-none text-gray-900 bg-white placeholder-gray-400 transition"
               placeholder="e.g., Organize desk drawer"
             />
           </div>
@@ -65,7 +65,7 @@
             <textarea
               v-model="newTask.description"
               rows="3"
-              class="input-field w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 focus:outline-none text-gray-900 bg-gray-50 placeholder-gray-400 transition"
+              class="input-field w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 focus:outline-none text-gray-900 bg-white placeholder-gray-400 transition"
               placeholder="Brief description of the task (optional)"
             ></textarea>
           </div>
@@ -76,7 +76,7 @@
             <input
               v-model="tagInput"
               type="text"
-              class="input-field w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 focus:outline-none text-gray-900 bg-gray-50 placeholder-gray-400 transition"
+              class="input-field w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 focus:outline-none text-gray-900 bg-white placeholder-gray-400 transition"
               placeholder="e.g., home, organize, quick"
             />
           </div>
@@ -84,10 +84,10 @@
             <button
               type="submit"
               :disabled="loading || !newTask.title.trim()"
-              class="bg-primary-600 hover:bg-primary-700 text-gray-900 rounded-lg px-6 py-3 text-base font-semibold transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto"
+              class="rounded-lg px-6 py-3 text-base font-semibold transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto"
             >
               <span v-if="loading">Adding...</span>
-              <span v-else>Add Task</span>
+              <span v-else>{{ editingTask ? 'Edit Task' : 'Add New Task' }}</span>
             </button>
             <button
               v-if="editingTask"
@@ -102,7 +102,7 @@
       </div>
 
       <div
-        class="card rounded-2xl shadow-xl bg-white/70 backdrop-blur p-6 md:p-8 border border-accent-100 w-full"
+        class="card rounded-2xl shadow-xl bg-gradient-to-br from-accent-50 via-white to-primary-50/80 backdrop-blur p-6 md:p-8 border border-accent-100 w-full"
       >
         <div
           class="flex flex-col sm:flex-row justify-between items-center mb-4 md:mb-6 gap-2"
@@ -122,7 +122,7 @@
           ></div>
           <p class="text-gray-500 mt-2">Loading tasks...</p>
         </div>
-        <div v-else-if="tasks.length === 0" class="text-center py-8">
+        <div v-else-if="tasks.length === 0 && !loading" class="text-center py-8">
           <div
             class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4"
           >
@@ -143,15 +143,18 @@
           <p class="text-gray-500">
             No tasks yet. Add your first 5-minute task above!
           </p>
+          <p v-if="error && error.length" class="text-red-500 mt-2">
+            Error: {{ error }}
+          </p>
         </div>
         <div v-else class="space-y-4 overflow-x-auto">
           <div
             v-for="task in tasks"
             :key="task.id"
-            class="task-card bg-white/80 rounded-xl p-4 md:p-5 flex flex-col sm:flex-row justify-between items-start shadow border border-gray-100 min-w-[260px]"
+            class="task-card bg-white/90 rounded-2xl p-4 md:p-5 flex flex-col sm:flex-row justify-between items-start shadow border border-gray-100 min-w-[260px] hover:shadow-lg transition-shadow group"
           >
             <div class="flex-1">
-              <h3 class="text-base md:text-lg font-semibold text-gray-900 mb-1">
+              <h3 class="text-base md:text-lg font-semibold text-gray-900 mb-1 group-hover:text-primary-700 transition-colors">
                 {{ task.title }}
               </h3>
               <p v-if="task.description" class="text-gray-600 mb-2">
@@ -164,7 +167,7 @@
                 <span
                   v-for="tag in task.tags"
                   :key="tag"
-                  class="px-2 py-1 bg-primary-100 text-primary-800 rounded-full text-xs font-medium"
+                  class="px-2 py-1 bg-primary-100 text-primary-800 rounded-full text-xs font-medium border border-primary-200 shadow-sm"
                   >{{ tag }}</span
                 >
               </div>
@@ -217,7 +220,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, watch } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useAuth } from "../composables/useAuth";
 import { useFirestore } from "../composables/useFirestore";
@@ -229,6 +232,7 @@ const {
   getTasks,
   updateTask,
   deleteTask: deleteTaskFromFirestore,
+  error,
 } = useFirestore();
 
 const tasks = ref([]);
@@ -242,15 +246,44 @@ const newTask = ref({
 
 const tagInput = ref("");
 
+const loadTasks = async () => {
+  if (typeof isAuthReady !== 'undefined' && !isAuthReady?.value) {
+    console.log('TaskManager.vue: Auth not ready, skipping loadTasks');
+    return;
+  }
+  if (!user.value) {
+    console.log('TaskManager.vue: No user, cannot load tasks');
+    return;
+  }
+  loading.value = true;
+  console.log('TaskManager.vue: Loading tasks for user', user.value.uid);
+  const result = await getTasks(user.value.uid);
+  console.log('TaskManager.vue: getTasks result', result);
+  if (result.success) {
+    tasks.value = result.data;
+    console.log('TaskManager.vue: tasks after load', tasks.value);
+  } else {
+    console.error('Failed to load tasks:', result.error);
+  }
+  loading.value = false;
+};
+
 watch(
-  [() => isAuthReady && isAuthReady.value, () => user.value],
-  ([ready, val]) => {
-    if (ready && val === null) {
+  [() => (typeof isAuthReady !== 'undefined' ? isAuthReady?.value : true), () => user.value],
+  ([ready, val], [prevReady, prevVal]) => {
+    if (ready && val === null && prevVal !== null) {
       router.push("/login");
+    }
+    if (ready && val) {
+      loadTasks();
     }
   },
   { immediate: true },
 );
+
+onMounted(() => {
+  loadTasks();
+});
 
 const parsedTags = computed(() => {
   return tagInput.value
@@ -258,17 +291,6 @@ const parsedTags = computed(() => {
     .map((tag) => tag.trim())
     .filter((tag) => tag.length > 0);
 });
-
-const loadTasks = async () => {
-  if (!user.value) return;
-
-  loading.value = true;
-  const result = await getTasks(user.value.uid);
-  if (result.success) {
-    tasks.value = result.data;
-  }
-  loading.value = false;
-};
 
 const addTask = async () => {
   if (!user.value || !newTask.value.title.trim()) return;
@@ -288,16 +310,13 @@ const addTask = async () => {
       taskData,
     );
     if (result.success) {
-      const index = tasks.value.findIndex((t) => t.id === editingTask.value.id);
-      if (index !== -1) {
-        tasks.value[index] = { ...tasks.value[index], ...taskData };
-      }
       editingTask.value = null;
+      await loadTasks();
     }
   } else {
     const result = await addTaskToFirestore(user.value.uid, taskData);
     if (result.success) {
-      await loadTasks();
+      await loadTasks(); 
     }
   }
 
@@ -327,7 +346,7 @@ const deleteTask = async (taskId) => {
 
   const result = await deleteTaskFromFirestore(user.value.uid, taskId);
   if (result.success) {
-    tasks.value = tasks.value.filter((t) => t.id !== taskId);
+    await loadTasks();
   }
 };
 
@@ -335,8 +354,4 @@ const handleLogout = async () => {
   await logout();
   router.push("/login");
 };
-
-onMounted(async () => {
-  await loadTasks();
-});
 </script>

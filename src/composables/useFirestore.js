@@ -28,7 +28,10 @@ export const useFirestore = () => {
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
       });
-      return { success: true };
+      // Fetch the newly created task data
+      const newTaskSnap = await getDoc(docRef);
+      console.log('addTask: new task', { id: docRef.id, ...newTaskSnap.data() });
+      return { success: true, id: docRef.id, data: newTaskSnap.data() };
     } catch (err) {
       console.error("addTask Firestore error:", err);
       error.value = err.message;
@@ -50,6 +53,7 @@ export const useFirestore = () => {
       querySnapshot.forEach((doc) => {
         tasks.push({ id: doc.id, ...doc.data() });
       });
+      console.log('getTasks: tasks', tasks);
       return { success: true, data: tasks };
     } catch (err) {
       error.value = err.message;
