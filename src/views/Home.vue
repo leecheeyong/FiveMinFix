@@ -12,17 +12,12 @@
           <div
             class="w-10 h-10 bg-gradient-to-br from-primary-600 to-accent-600 rounded-xl flex items-center justify-center"
           >
-            <span class="text-gray-900 font-bold text-lg">5</span>
+            <img src="/logo-black.png" alt="FiveMinFix Logo" class="w-8 h-8" />
           </div>
           <h1 class="text-2xl font-bold text-gray-900">FiveMinFix</h1>
         </div>
 
         <div class="flex items-center gap-4">
-          <a
-            href="#how-it-works"
-            class="text-gray-600 hover:text-primary-600 transition-colors"
-            >How It Works</a
-          >
           <router-link to="/login" class="btn-primary">Get Started</router-link>
         </div>
       </div>
@@ -54,7 +49,7 @@
           <p
             class="text-2xl text-gray-700 mb-10 max-w-2xl mx-auto leading-relaxed font-medium"
           >
-            Transform overwhelming tasks into manageable 5-minute fixes. Build
+            Turn overwhelming tasks into manageable 5-minute fixes. Build
             momentum, maintain streaks, and level up your productivity with
             gamified micro-tasks.
           </p>
@@ -106,35 +101,23 @@
             class="flex flex-col items-center bg-white/90 rounded-3xl shadow-lg p-8 hover:scale-105 hover:shadow-2xl transition-all duration-300"
           >
             <div
-              class="w-16 h-16 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center mb-4 text-white text-2xl font-bold shadow-lg"
+              class="w-16 h-16 bg-blue-400 rounded-full flex items-center justify-center mb-4 text-white text-2xl font-bold shadow-lg"
             >
               <svg
-                class="w-8 h-8"
-                fill="none"
-                stroke="currentColor"
+                xmlns="http://www.w3.org/2000/svg"
+                width="28"
+                height="28"
                 viewBox="0 0 24 24"
+                style="fill: white"
               >
-                <circle cx="12" cy="12" r="10" stroke-width="2" />
-                <line
-                  x1="12"
-                  y1="8"
-                  x2="12"
-                  y2="16"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                />
-                <line
-                  x1="8"
-                  y1="12"
-                  x2="16"
-                  y2="12"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                />
+                <path
+                  d="M16 2H8C4.691 2 2 4.691 2 8v13a1 1 0 0 0 1 1h13c3.309 0 6-2.691 6-6V8c0-3.309-2.691-6-6-6zm4 14c0 2.206-1.794 4-4 4H4V8c0-2.206 1.794-4 4-4h8c2.206 0 4 1.794 4 4v8z"
+                ></path>
+                <path d="M13 7h-2v4H7v2h4v4h2v-4h4v-2h-4z"></path>
               </svg>
             </div>
             <div
-              class="w-8 h-8 flex items-center justify-center bg-primary-100 text-primary-700 rounded-full font-bold mb-2"
+              class="w-8 h-8 flex items-center justify-center bg-blue-100 text-blue-700 rounded-full font-bold mb-2"
             >
               1
             </div>
@@ -147,24 +130,22 @@
             class="flex flex-col items-center bg-white/90 rounded-3xl shadow-lg p-8 hover:scale-105 hover:shadow-2xl transition-all duration-300"
           >
             <div
-              class="w-16 h-16 bg-gradient-to-br from-accent-500 to-accent-600 rounded-full flex items-center justify-center mb-4 text-white text-2xl font-bold shadow-lg"
+              class="w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center mb-4 text-white text-2xl font-bold shadow-lg"
             >
               <svg
-                class="w-8 h-8"
-                fill="none"
-                stroke="currentColor"
+                xmlns="http://www.w3.org/2000/svg"
+                width="28"
+                height="28"
                 viewBox="0 0 24 24"
+                style="fill: white"
               >
-                <circle cx="12" cy="12" r="10" stroke-width="2" />
-                <polygon
-                  points="10,8 16,12 10,16"
-                  fill="currentColor"
-                  stroke="none"
-                />
+                <path
+                  d="M20.978 13.21a1 1 0 0 0-.396-1.024l-14-10a.999.999 0 0 0-1.575.931l2 17a1 1 0 0 0 1.767.516l3.612-4.416 3.377 5.46 1.701-1.052-3.357-5.428 6.089-1.218a.995.995 0 0 0 .782-.769zm-8.674.31a1 1 0 0 0-.578.347l-3.008 3.677L7.257 5.127l10.283 7.345-5.236 1.048z"
+                ></path>
               </svg>
             </div>
             <div
-              class="w-8 h-8 flex items-center justify-center bg-accent-100 text-accent-700 rounded-full font-bold mb-2"
+              class="w-8 h-8 flex items-center justify-center bg-yellow-100 text-yellow-700 rounded-full font-bold mb-2"
             >
               2
             </div>
@@ -248,7 +229,7 @@
             <div
               class="w-10 h-10 bg-gradient-to-br from-primary-600 to-accent-600 rounded-xl flex items-center justify-center"
             >
-              <span class="text-gray-900 font-bold text-lg">5</span>
+              <img src="/logo.png" alt="FiveMinFix Logo" class="w-9 h-9" />
             </div>
             <div>
               <h3 class="text-xl font-bold">FiveMinFix</h3>
@@ -260,7 +241,20 @@
 
           <div class="text-center md:text-right">
             <p class="text-gray-400 text-sm">
-              Made with ❤️ for productivity enthusiasts
+              Made with ❤️ by
+              <a
+                href="https://github.com/leecheeyong"
+                target="_blank"
+                class="text-gray-200 hover:underline"
+                >Chee Yong Lee</a
+              ><br />
+              Project available as an open source under the terms of the
+              <a
+                href="https://github.com/leecheeyong/FiveMinFix/blob/main/LICENSE"
+                target="_blank"
+                class="text-gray-200 hover:underline"
+                >MIT License</a
+              >
             </p>
             <router-link
               to="/login"

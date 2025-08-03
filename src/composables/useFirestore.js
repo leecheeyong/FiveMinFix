@@ -28,7 +28,13 @@ export const useFirestore = () => {
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
       });
-      return { success: true };
+      // Fetch the newly created task data
+      const newTaskSnap = await getDoc(docRef);
+      console.log("addTask: new task", {
+        id: docRef.id,
+        ...newTaskSnap.data(),
+      });
+      return { success: true, id: docRef.id, data: newTaskSnap.data() };
     } catch (err) {
       console.error("addTask Firestore error:", err);
       error.value = err.message;
@@ -41,15 +47,16 @@ export const useFirestore = () => {
   const getTasks = async (userId) => {
     loading.value = true;
     try {
-      console.log('getTasks: userId', userId); // DEBUG
+      console.log("getTasks: userId", userId); // DEBUG
       const tasksRef = collection(db, "users", userId, "tasks");
       const q = query(tasksRef, orderBy("createdAt", "desc"));
       const querySnapshot = await getDocs(q);
-      console.log('getTasks: querySnapshot.size', querySnapshot.size); // DEBUG
+      console.log("getTasks: querySnapshot.size", querySnapshot.size); // DEBUG
       const tasks = [];
       querySnapshot.forEach((doc) => {
         tasks.push({ id: doc.id, ...doc.data() });
       });
+      console.log("getTasks: tasks", tasks);
       return { success: true, data: tasks };
     } catch (err) {
       error.value = err.message;
@@ -116,10 +123,14 @@ export const useFirestore = () => {
   const updateUserStats = async (userId, updates) => {
     try {
       const userRef = doc(db, "users", userId);
-      await setDoc(userRef, {
-        ...updates,
-        updatedAt: serverTimestamp(),
-      }, { merge: true });
+      await setDoc(
+        userRef,
+        {
+          ...updates,
+          updatedAt: serverTimestamp(),
+        },
+        { merge: true },
+      );
       return { success: true };
     } catch (err) {
       error.value = err.message;

@@ -119,7 +119,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useAuth } from "../composables/useAuth";
 
@@ -131,6 +131,8 @@ const password = ref("");
 const error = ref("");
 const isLoading = ref(false);
 const isSignUp = ref(false);
+const isLogin = computed(() => !isSignUp.value);
+const loading = computed(() => isLoading.value);
 
 const toggleMode = () => {
   isLogin.value = !isLogin.value;
