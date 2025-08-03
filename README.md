@@ -12,8 +12,6 @@ Beat procrastination, one 5-minute task at a time!
 - Daily streak tracking
 - Progress stats dashboard
 
-<img width="581" height="643" alt="Screenshot 2025-08-03 at 2 38 17 PM" src="https://github.com/user-attachments/assets/1ad995c7-b828-4029-833b-e6a5d439c4f6" />
-
 ## Setup
 
 1. **Clone the repository:**
