@@ -262,12 +262,13 @@
 </template>
 
 <script setup>
-import { ref, watch, computed } from "vue";
-import { useRouter } from "vue-router";
+import { ref, watch, computed, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
 import { useAuth } from "../composables/useAuth";
 import { useFirestore } from "../composables/useFirestore";
 
 const router = useRouter();
+const route = useRoute();
 const { user, logout, isAuthReady } = useAuth();
 const { getTasks, getUserStats, updateUserStats } = useFirestore();
 
@@ -325,6 +326,19 @@ watch(
     }
   },
   { immediate: true },
+);
+
+onMounted(() => {
+  loadTasks();
+  loadUserStats();
+});
+
+watch(
+  () => route.fullPath,
+  () => {
+    loadTasks();
+    loadUserStats();
+  }
 );
 
 const getRandomTask = async () => {
