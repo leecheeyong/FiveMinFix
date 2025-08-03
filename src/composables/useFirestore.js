@@ -28,7 +28,6 @@ export const useFirestore = () => {
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
       });
-      // Fetch the newly created task data
       const newTaskSnap = await getDoc(docRef);
       console.log("addTask: new task", {
         id: docRef.id,
@@ -47,16 +46,16 @@ export const useFirestore = () => {
   const getTasks = async (userId) => {
     loading.value = true;
     try {
-      console.log("getTasks: userId", userId); // DEBUG
+    //  console.log("getTasks: userId", userId); 
       const tasksRef = collection(db, "users", userId, "tasks");
       const q = query(tasksRef, orderBy("createdAt", "desc"));
       const querySnapshot = await getDocs(q);
-      console.log("getTasks: querySnapshot.size", querySnapshot.size); // DEBUG
+     // console.log("getTasks: querySnapshot.size", querySnapshot.size);
       const tasks = [];
       querySnapshot.forEach((doc) => {
         tasks.push({ id: doc.id, ...doc.data() });
       });
-      console.log("getTasks: tasks", tasks);
+    //  console.log("getTasks: tasks", tasks);
       return { success: true, data: tasks };
     } catch (err) {
       error.value = err.message;
