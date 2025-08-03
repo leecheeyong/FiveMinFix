@@ -5,6 +5,7 @@
 Beat procrastination, one 5-minute task at a time!
 
 ## Features
+
 - User authentication (sign up/sign in)
 - Add, manage, and complete 5-minute tasks
 - Random task recommender
@@ -38,7 +39,3 @@ Contributions are welcome! Please [open issues](https://github.com/leecheeyong/F
 ## License
 
 FiveMinFix is available as open source under the terms of the [MIT License](https://github.com/leecheeyong/FiveMinFix/blob/main/LICENSE).
-
-
-
-

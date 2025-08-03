@@ -338,7 +338,7 @@ watch(
   () => {
     loadTasks();
     loadUserStats();
-  }
+  },
 );
 
 const getRandomTask = async () => {
