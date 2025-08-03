@@ -127,72 +127,6 @@
             to get started!
           </p>
         </div>
-
-        <!-- Modal Overlay for Current Task -->
-        <div
-          v-if="currentTask && showTask"
-          class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-2 md:px-0"
-        >
-          <div
-            class="relative w-full max-w-lg md:max-w-xl bg-white rounded-3xl shadow-2xl border border-gray-200 p-4 md:p-8 flex flex-col gap-4 animate-slide-up"
-            style="box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18)"
-          >
-            <button
-              @click="resetTask"
-              class="absolute top-3 right-3 text-gray-400 hover:text-primary-600 text-3xl font-bold transition-colors focus:outline-none focus:ring-2 focus:ring-primary-300 rounded-full w-10 h-10 flex items-center justify-center bg-gray-100 hover:bg-primary-50"
-              aria-label="Close"
-            >
-              ×
-            </button>
-            <h3
-              class="text-2xl md:text-3xl font-bold text-primary-700 mb-2 text-center tracking-tight"
-            >
-              Your 5-Minute Fix
-            </h3>
-            <div
-              class="bg-gray-50/90 rounded-2xl p-4 md:p-6 mb-2 md:mb-4 shadow-sm border border-gray-100"
-            >
-              <p
-                class="text-lg md:text-xl text-gray-900 mb-2 font-semibold text-center"
-              >
-                {{ currentTask.title }}
-              </p>
-              <p class="text-gray-600 text-center">
-                {{ currentTask.description }}
-              </p>
-              <div
-                v-if="currentTask.tags && currentTask.tags.length > 0"
-                class="flex flex-wrap gap-2 mt-4 justify-center"
-              >
-                <span
-                  v-for="tag in currentTask.tags"
-                  :key="tag"
-                  class="px-3 py-1 bg-primary-100/90 text-primary-800 rounded-full text-xs font-medium shadow-sm border border-primary-200"
-                >
-                  {{ tag }}
-                </span>
-              </div>
-            </div>
-            <div
-              class="flex flex-col md:flex-row gap-2 md:gap-4 justify-center mt-2"
-            >
-              <button
-                @click="completeTask"
-                :disabled="loading"
-                class="bg-accent-600 hover:bg-accent-700 rounded-xl px-6 py-3 font-semibold transition-colors shadow disabled:opacity-50 disabled:cursor-not-allowed w-full md:w-auto text-lg"
-              >
-                ✅ Done (+5 XP)
-              </button>
-              <button
-                @click="skipTask"
-                :disabled="loading"
-                class="bg-gray-200 hover:bg-gray-300 text-gray-900 rounded-xl px-6 py-3 font-semibold transition-colors shadow disabled:opacity-50 disabled:cursor-not-allowed w-full md:w-auto text-lg"
-              >
-                ⏭️ Skip
-              </button>
-            </div>
-          </div>
-        </div>
       </div>
 
       <div class="overflow-x-auto">
@@ -238,7 +172,93 @@
         </div>
       </div>
     </main>
+
+    <div
+      v-if="currentTask && showTask"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-2 md:px-0"
+    >
+      <div
+        class="relative w-full max-w-lg md:max-w-xl bg-white rounded-3xl shadow-2xl border border-gray-200 p-4 md:p-8 flex flex-col gap-4 animate-slide-up"
+        style="box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18)"
+      >
+        <button
+          @click="resetTask"
+          class="absolute top-3 right-3 text-gray-400 hover:text-primary-600 text-3xl font-bold transition-colors focus:outline-none focus:ring-2 focus:ring-primary-300 rounded-full w-10 h-10 flex items-center justify-center bg-gray-100 hover:bg-primary-50"
+          aria-label="Close"
+        >
+          ×
+        </button>
+        <h3
+          class="text-2xl md:text-3xl font-bold text-primary-700 mb-2 text-center tracking-tight"
+        >
+          Your 5-Minute Fix
+        </h3>
+        <div
+          class="bg-gray-50/90 rounded-2xl p-4 md:p-6 mb-2 md:mb-4 shadow-sm border border-gray-100"
+        >
+          <p
+            class="text-lg md:text-xl text-gray-900 mb-2 font-semibold text-center"
+          >
+            {{ currentTask.title }}
+          </p>
+          <p class="text-gray-600 text-center">
+            {{ currentTask.description }}
+          </p>
+          <div
+            v-if="currentTask.tags && currentTask.tags.length > 0"
+            class="flex flex-wrap gap-2 mt-4 justify-center"
+          >
+            <span
+              v-for="tag in currentTask.tags"
+              :key="tag"
+              class="px-3 py-1 bg-primary-100/90 text-primary-800 rounded-full text-xs font-medium shadow-sm border border-primary-200"
+            >
+              {{ tag }}
+            </span>
+          </div>
+        </div>
+        <div
+          class="flex flex-col md:flex-row gap-2 md:gap-4 justify-center mt-2"
+        >
+          <button
+            @click="completeTask"
+            :disabled="loading"
+            class="bg-accent-600 hover:bg-accent-700 rounded-xl px-6 py-3 font-semibold transition-colors shadow disabled:opacity-50 disabled:cursor-not-allowed w-full md:w-auto text-lg"
+          >
+            ✅ Done (+5 XP)
+          </button>
+          <button
+            @click="skipTask"
+            :disabled="loading"
+            class="bg-gray-200 hover:bg-gray-300 text-gray-900 rounded-xl px-6 py-3 font-semibold transition-colors shadow disabled:opacity-50 disabled:cursor-not-allowed w-full md:w-auto text-lg"
+          >
+            ⏭️ Skip
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
+  <footer class="py-8 text-center text-gray-500 text-sm">
+    <p>
+      Made with <span class="text-red-500">❤️</span> by
+      <a
+        href="https://github.com/leecheeyong"
+        target="_blank"
+        class="text-gray-700 hover:underline"
+      >
+        Chee Yong Lee
+      </a>
+    </p>
+    <p class="mt-1">
+      Project available as open source under the terms of
+      <a
+        href="https://github.com/leecheeyong/FiveMinFix/blob/main/LICENSE"
+        target="_blank"
+        class="text-gray-700 hover:underline"
+        >MIT License</a
+      >
+    </p>
+  </footer>
 </template>
 
 <script setup>
@@ -351,12 +371,11 @@ const completeTask = async () => {
     lastCompletedDate: today,
     totalTasksCompleted: userStats.value.totalTasksCompleted + 1,
   });
-  console.log("updateUserStats result:", updateResult); // DEBUG
+  console.log("updateUserStats result:", updateResult);
   if (!updateResult.success) {
     alert("Failed to update stats: " + updateResult.error);
   }
 
-  // Always reload stats from Firestore after update
   await loadUserStats();
 
   await resetTask();

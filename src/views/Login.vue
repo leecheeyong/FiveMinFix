@@ -135,7 +135,7 @@ const isLogin = computed(() => !isSignUp.value);
 const loading = computed(() => isLoading.value);
 
 const toggleMode = () => {
-  isLogin.value = !isLogin.value;
+  isSignUp.value = !isSignUp.value;
   error.value = "";
 };
 
